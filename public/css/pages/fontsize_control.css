@@ -1,0 +1,41 @@
+html {
+  font-size: 16px;
+}
+
+
+.page-header {
+  font-size:1.6rem !important;
+}
+
+.dropdown-header{
+  font-size:0.9rem;
+}
+
+.nav-link{
+  font-size:1.05rem;
+}
+
+@media screen and (max-width: 767px) {
+  html {
+    font-size: 14px !important;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  html {
+    font-size: 15px !important;
+  }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
+  html {
+    font-size: 17px !important;
+  }
+}
+
+
+@media screen and (min-width: 1441px) {
+  html {
+    font-size: 18px !important;
+  }
+}

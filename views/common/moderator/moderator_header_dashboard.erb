@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="bootstrap-3.3.7/img/favicon.ico">
+
+    <title>Moderator Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap-3.3.7/dist/css/bootstrap-addon.css" rel="stylesheet">
+    <link href="bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="bootstrap-3.3.7/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/pages/dashboard.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="bootstrap-3.3.7/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="css/pages/fontsize_control.css" rel="stylesheet">
+  </head>
+
+  <body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/" style="font-size:1.9rem !important;">EdFlix</a>
+          <ul class="nav navbar-nav"style="font-size:1.3rem !important;">
+            <li class="active"><a href="/moderator-dashboard">Moderator Dashboard</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <% if session[:account_type] == "7" %>
+              <li><a href="/switch-account-to-user">Switch Account</a></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="dropdown-header">General</li>
+            <li><a class="nav-link" href="/moderator-dashboard">Overview <span class="sr-only">(current)</span></a></li>
+            <li><a class="nav-link" href="/moderator-profile">Profile</a></li>
+            <li><a class="nav-link hidden" href="/moderator-notification">Notifications</a></li>
+            <li><a class="nav-link" href="/moderator-send-message">Send Message</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li class="dropdown-header">Users</li>
+            <li><a class="nav-link" href="/moderator-users-listing">Users Listing</a></li>
+            <li><a class="nav-link hidden" href="/moderator-users-messaging">Users Messaging</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li class="dropdown-header">Course</li>
+            <li><a class="nav-link" href="/moderator-courses-listing">Courses Listing</a></li>
+            <li><a class="nav-link" href="/moderator-courses-pending-listing">Pending Listing</a></li>
+            <li><a class="nav-link" href="/moderator-add-course">Add New Course</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li class="dropdown-header">Other</li>
+            <li><a class="nav-link" href="/sign-out">Sign Out</a></li>
+          </ul>
+        </div>

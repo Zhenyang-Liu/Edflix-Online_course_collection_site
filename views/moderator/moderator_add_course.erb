@@ -1,0 +1,122 @@
+<%= erb :"common/moderator/moderator_header_dashboard" %>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-lg-11 col-lg-offset-1 main">
+        <div class="section gray-bg" id="contactus">
+            <div class="container col-md-11 col-lg-9 col-lg-offset-1">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="section-title">
+                            <h2 class="page-header" style="margin-top:10px;">Add New Course</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row flex-row-reverse" style="font-size:1.2rem;">
+                    <div class="col-sm-9 col-md-12 col-lg-12 m-15px-tb">
+                        <div class="contact-form">
+                            <form action="add_course" method="post" enctype="multipart/form-data" class="contactform contact_form" id="contact_form">
+                                <div class="returnmessage valid-feedback p-15px-b"
+                                    data-success="Your message has been received, We will contact you soon."></div>
+                                <div class="empty_notice invalid-feedback p-15px-b" style="padding-bottom: 20px">
+                                Please Fill Required Fields</div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <input id="course-name" type="text" name="course_name" placeholder="Course Name" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <input id="course-provider" type="text" name="company" placeholder="Course Provider"
+                                                class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <textarea id="course-description" name="course_description" placeholder="Course Description" class="form-control"
+                                                rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="course_duration" class="control-label">Course Duration</label>
+                                            <input id="course_hours" type="number" name="course_hours" placeholder="Hours" class="form-control" min="0" step="1">
+                                            <input id="course_minutes" type="number" name="course_minutes" placeholder="Minutes" class="form-control" min="0" max="59" step="1">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="availability" class="control-label">Availability</label>
+                                            <select name="availability" class="form-control">
+                                                <option value="1">Available</option>
+                                                <option value="0">Not Available</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <input id="enrollment-link" type="text" name="enrollment_link" placeholder="Enrollment Link"
+                                                class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="topic" class="control-label">Topic</label>
+                                            <select name="topic" id="topic" class="form-control" required>
+                                              <!-- <option id="select-one" disabled hidden selected>Select One</option> -->
+                                              <option value="Computer Science">Computer Science</option>
+                                              <option value="Biology">Biology</option>
+                                              <option value="Chemistry">Chemistry</option>
+                                              <option value="Physics">Physics</option>
+                                              <option value="Mechanical engineering">Mechanical Engineering</option>
+                                              <option value="Mathematics">Mathematics</option>
+                                              <option value="History">History</option>
+                                              <option value="Health and Psychology">Health and Psychology</option>
+                                              <option value="Finance">Finance</option>
+                                              <option value="Law and Politics">Law and Politics</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="course-image" class="control-label">Course Image</label>
+                                            <input id="course-image" type="file" name="course_image" class="form-control" accept="image/*">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-lg">Add Course</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <% if flash[:success] %>
+                            <div class="alert alert-success"><%= flash[:success] %></div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<style>
+input::placeholder {
+  font-size: 0.9rem;
+}
+textarea::placeholder {
+  font-size: 0.9rem;
+}
+option {
+  font-size: 0.9rem;
+}
+select{
+  font-size: 0.9rem;
+}
+.control-label{
+  font-size: 0.9rem;
+}
+</style>
+<%= erb :"common/moderator/moderator_footer_dashboard" %>

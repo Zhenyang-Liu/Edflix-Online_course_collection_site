@@ -1,0 +1,145 @@
+<%= erb :"common/manager/manager_header_dashboard" %>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header" style="margin-top:10px;">Account Request Listing</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <h5 style="font-size:1rem;">View user account status and view all registered users.</h5>
+              <div class="pull-left col-lg-6 col-md-5 col-sm-4 col-xs-4" style="padding-left:0;margin-top:10px;margin-bottom:10px">
+                <div class="input-group input-group-lg">
+                    <form action="/account_request_search_manager" method="get">
+                    <input type="text" class="form-control search_input" placeholder="ID / Username" name="accountRequestSearchKeyword" value="<%= h(session[:accountRequestSearchKeyword]) if session[:accountRequestSearchKeyword] %>">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Go!</button>
+                    </span>
+                    </form>
+                </div>
+              </div>
+              <% if session[:accountRequestSearchKeyword] %>
+              <form action="/clear_account_request_search_manager" method="post" class="form-inline">
+                  <button class="btn btn-danger btn-lg" type="submit" style="margin-top:10px">Clear</button>
+              </form>
+              <% end %>
+              <button type="button" class="btn btn-success btn-filter pull-right row btn-lg print" data-target="" style="margin-right: 10px;margin-top:10px;margin-bottom:10px" onclick="window.print();">Print Report</button>
+              <div style="margin-top: 6vmin"></div>
+              <div style="margin-top: 60px"></div>
+              <thead>
+                  <tr style="font-size:1rem;">
+                      <th>ID</th>
+                      <th>Company Name</th>
+                      <th>Company Email</th>
+                      <th>Account Type</th>
+                      <th>Link</th>
+                      <th>Status</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <% @requests.each do |request| %>
+                    <tr class="text-left" style="font-size:1rem;">
+                      <td><%= request.request_id %></td>
+                      <td><a href="/manager-account-request-detail?id=<%= request.request_id %>" style="font-size: 18px !important;" class="course-name"><%= request.company_name %></a></td>
+                      <td><%=h request.company_email %></td>
+                      <td>
+                          <% if request.account_type.to_i == 1 %>
+                            User
+                          <% elsif request.account_type.to_i == 2 %>
+                            Moderator
+                          <% elsif request.account_type.to_i == 3 %>
+                            Manager
+                          <% elsif request.account_type.to_i == 4 %>
+                            Admin
+                          <% elsif request.account_type.to_i == 5 %>
+                            Course Provider
+                          <% else %>
+                            User
+                          <% end %>
+                      </td>
+                      <td><%= request.link %></td>
+                      <td>
+                        <% if request.status.to_i == 1 %>
+                            <span class="font-weight-bold" style="color: red ">Rejected<span>
+                          <% elsif request.status.to_i == 0 %>
+                            <span class="font-weight-bold" style="color: #059900 ">Approved<span>
+                          <% else %>
+                            <span class="font-weight-bold" style="color: #0000FF ">Need Action<span>
+                          <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+              </tbody>
+          </table>
+        </div>
+    </div>
+
+    <link href="css/widgets/modal.css" rel="stylesheet">
+
+    <div class="modal fade" id="modalBroadcast" tabindex="-1" role="dialog" aria-labelledby="modalBroadcast" aria-hidden="true">
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header modal-header-info">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></span> Broadcast Message</h4>
+          </div>
+          <div class="modal-body">
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputTo"></span>To</label>
+                  <div class="col-sm-10"><input type="email" class="form-control" id="inputTo" placeholder="comma separated list of recipients"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputSubject"></span>Subject</label>
+                  <div class="col-sm-10"><input type="text" class="form-control" id="inputSubject" placeholder="subject"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-12" for="inputBody"></span>Message</label>
+                  <div class="col-sm-12"><textarea class="form-control" id="inputBody" rows="8"></textarea></div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> 
+            <button type="button" class="btn btn-primary ">Send <i class="fa fa-arrow-circle-right fa-lg"></i></button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalCompose" tabindex="-1" role="dialog" aria-labelledby="modalCompose" aria-hidden="true">
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header modal-header-info">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></span> Compose Message</h4>
+          </div>
+          <div class="modal-body">
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputTo"></span>To</label>
+                  <div class="col-sm-10"><input type="email" class="form-control" id="inputTo" placeholder="comma separated list of recipients"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputSubject"></span>Subject</label>
+                  <div class="col-sm-10"><input type="text" class="form-control" id="inputSubject" placeholder="subject"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-12" for="inputBody"></span>Message</label>
+                  <div class="col-sm-12"><textarea class="form-control" id="inputBody" rows="8"></textarea></div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> 
+            <button type="button" class="btn btn-primary ">Send <i class="fa fa-arrow-circle-right fa-lg"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<%= erb :"common/manager/manager_footer_dashboard" %>

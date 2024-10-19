@@ -1,0 +1,62 @@
+<%= erb :"common/moderator/moderator_header_dashboard" %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-10 col-sm-offset-3 col-md-offset-2 main">
+            <h2 class="page-header">Send Message</h2>
+            <h5>Send a message to the users</h5>
+            <div class="send-message">
+                <form method="post" class="send_message" id="send_message">
+                <div class="form-group <% if @broadcast.errors.include?('subject') %> has-error <% end %>">
+                    <input type="text" class="form-control" name="subject" placeholder="Subject" value="<%= h @broadcast.subject %>" />
+                    <% if @broadcast.errors.include?('subject') %>
+                    <% @broadcast.errors['subject'].each do |error| %>
+                        <span class="help-block"><strong>Subject <%= error %></strong></span>
+                    <% end %>
+                    <% end %>
+                </div>
+
+                <div class="form-group <% if @broadcast.errors.include?('content') %> has-error <% end %>">
+                    <textarea placeholder="Message" name="content" class="form-control" rows="8"><%= h @broadcast.content %></textarea>
+                    <% if @broadcast.errors.include?('content') %>
+                    <% @broadcast.errors['content'].each do |error| %>
+                        <span class="help-block"><strong>Content <%= error %></strong></span>
+                    <% end %>
+                    <% end %>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+<style>
+    .main {
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 30px;
+    }
+    input::placeholder,
+    textarea::placeholder {
+    font-size: 1rem; 
+    }
+
+    h5 {
+        font-size: 1rem;
+        color: #888;
+        margin-bottom: 20px;
+    }
+
+    .send-message {
+        margin-top: 20px;
+    }
+
+    .send_message {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+<%= erb :"common/moderator/moderator_footer_dashboard" %>

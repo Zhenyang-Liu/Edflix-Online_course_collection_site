@@ -1,0 +1,333 @@
+<%= erb :"common/course_provider/course_provider_header_dashboard" %>
+
+  <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2 class="page-header" style="margin-top:10px;">Courses Listing</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <div class="pull-left col-lg-6 col-md-5 col-sm-4 col-xs-4" style="padding-left:0;margin-top:10px;margin-bottom:10px">
+          <div class="input-group input-group-lg">
+            <form action="/course_listing_search_course_provider" method="get">
+              <input type="text" class="form-control search_input" placeholder="Search for ID / Course Name" name="managementSearchKeyword_cp" value="<%= h(session[:managementSearchKeyword_cp]) if session[:managementSearchKeyword_cp] %>">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="submit">Go!</button>
+              </span>
+            </form>
+          </div>
+        </div>
+        <% if session[:managementSearchKeyword_cp] %>
+          <form action="/clear_listing_search_course_provider" method="post" class="form-inline">
+            <button class="btn btn-danger btn-lg" type="submit" style="margin-top:10px">Clear</button>
+          </form>
+        <% end %>
+        <button type="button" class="btn btn-success btn-filter pull-right row btn-lg" data-target="" style="margin-right: 10px;margin-top:10px;margin-bottom:10px" onclick="window.location.href='/course-provider-add-new-course'">Add New Course</button>
+        <div style="margin-top: 6vmin"></div>
+
+        <thead>
+          <tr class="h4">
+            <th>Details</th>
+            <th>ID</th>
+            <th>Course Name</th>
+            <th>Status</th>
+            <th>Updated At</th>
+            <th>Modified by</th>
+            <th>Modification</th>
+          </tr>
+        </thead>
+        <% if flash[:success] %>
+          <div style="padding-top:10px">
+            <div class="alert alert-success"><%= flash[:success] %></div>
+          </div>
+        <% end %>
+        <tbody>
+          <% @courses.each do |course| %>
+            <tr class="text-left" style="font-size:1rem;">
+              <td>
+                <button type="button" class="btn btn-link rotate-arrow">
+                  <span class="glyphicon glyphicon-chevron-right"></span>
+                </button>
+              </td>
+              <td ><%= course.course_id %></td>
+              <td><%= course.course_name %></td>
+              <td>
+                <% if course.availability.to_i == 1 %>
+                  Available
+                <% else %>
+                  Not Available
+                <% end %>
+              </td>
+              <td><%= course.updated_at %></td>
+              <td><%= User.get_username_by_id(course.updated_by)%></td>
+              <td>
+                <button class="btn-info btn update-button">Update</button>
+              </td>
+            </tr>
+            <tr class="edit-form form-container" >
+              <td></td>
+              <td colspan="4">
+                <form class="edit-form form-detail" action="course-provider-update_course/<%= course.course_id%>" method="post" style="width:85%;" enctype="multipart/form-data">
+                  <div class="form-group">
+                    <label for="course_name" class="control-label">Course Name:</label>
+                    <input id="course_name" type="text" name="course_name" class="form-control" value="<%= course.course_name %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="course_duration" class="control-label">Course Duration:</label>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <input id="course_hours" type="number" name="course_hours" class="form-control" value="<%= course.course_duration / 60 %>">
+                        <label for="course_hours">Hours</label>
+                      </div>
+                      <div class="col-sm-6">
+                        <input id="course_minutes" type="number" name="course_minutes" class="form-control" value="<%= course.course_duration % 60 %>">
+                        <label for="course_minutes">Minutes</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="course_description" class="control-label">Description:</label>
+                    <textarea id="course_description" name="course_description" class="form-control"  ><%= course.course_description %></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="availability" class="control-label" >Availability:</label>
+                    <select id="availability" name="availability" class="form-control">
+                      <option value="1" <%= "selected" if course.availability.to_i == 1 %>>Available</option>
+                      <option value="0" <%= "selected" if course.availability.to_i == 0 %>>Not Available</option>
+                    </select>
+                  </div>
+                  <div class="form-group" hidden>
+                    <label for="course-provider" class="control-label">Course Provider:</label>
+                    <input id="course-provider" type="text" name="company" class="form-control" value="<%= course.company %>">
+                  </div>
+                  <div class="form-group">
+                    <label for="enrollment-link" class="control-label">Enrollment Link:</label>
+                    <input id="enrollment-link" type="text" name="enrollment_link" class="form-control" value="<%= course.enrollment_link %>">
+                  </div>
+
+                  <div class="form-group">
+                   <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <label for="topic" class="control-label">Topic</label>
+                      <select name="topic" id="topic" class="form-control">
+                          <option <%= 'selected' if course.topic == '' %> >Select One</option>
+                          <option value="Computer Science" <%= 'selected' if course.topic == 'Computer Science' %> >Computer Science</option>
+                          <option value="Biology" <%= 'selected' if course.topic == 'Biology' %>>Biology</option>
+                          <option value="Chemistry" <%= 'selected' if course.topic == 'Chemistry' %>>Chemistry</option>
+                          <option value="Physics" <%= 'selected' if course.topic == 'Physics' %>>Physics</option>
+                          <option value="Mechanical engineering" <%= 'selected' if course.topic == 'Mechanical Engineering' %>>Mechanical Engineering</option>
+                          <option value="Mathematics" <%= 'selected' if course.topic == 'Mathematics' %>>Mathematics</option>
+                          <option value="History" <%= 'selected' if course.topic == 'History' %>>History</option>
+                          <option value="Health and Psychology" <%= 'selected' if course.topic == 'Health and Psychology' %>>Health and Psychology</option>
+                          <option value="Finance" <%= 'selected' if course.topic == 'Finance' %>>Finance</option>
+                          <option value="Law and Politics" <%= 'selected' if course.topic == 'Law and Politics' %>>Law and Politics</option>
+                      </select>
+                      </div>
+                        <div class="col-sm-12 col-md-6">
+                            <% if course.has_image == 1 %>
+                              <label for="course-image" style="color: #00008B;">Modify Course Image</label>
+                            <% else %>
+                              <label for="course-image" style="color: green;">Add Course Image</label>
+                            <% end %>
+                          <div class="d-flex align-items-center">
+                            <input id="course-image" type="file" name="course_image" class="form-control">
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary save-button">Save</button>
+                    <button type="button" class="btn btn-default cancel-button">Cancel</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Course Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>[checkbox must be checked first!] This course will be deleted. Please click button below to delete.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">How to Update Course</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Please select one course from the listing to update the course.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<%= erb :"common/course_provider/course_provider_footer_dashboard" %>
+
+<style>
+  td{
+    vertical-align: middle !important;
+  }
+
+  .rotate-arrow {
+    outline: none !important;
+    border: none;
+    background-color: transparent;
+    padding: 10px 10px;
+  }
+
+  .rotate-arrow span {
+    transition: transform 0.3s ease-out;
+  }
+
+  .rotate-arrow.open span {
+    transform: rotate(90deg);
+  }
+
+  textarea {
+    width: auto;
+    max-width: 55vw;
+  }
+  @media (min-width: 992px) {
+    .table-responsive {
+      overflow-x: hidden;
+    }
+  }
+</style>
+
+<script>
+
+$(document).one('ready', function() {
+  $('.form-container').addClass('hidden'); 
+  $('.save-button').addClass('hidden'); 
+  $('.cancel-button').addClass('hidden');
+  $("input").prop("readonly", true);
+  $(".search_input").removeAttr("readonly");
+});
+
+const arrowButtons = document.querySelectorAll(".rotate-arrow");
+
+arrowButtons.forEach((arrowButton) => {
+  const formRow = arrowButton.parentElement.parentElement.nextElementSibling;
+  arrowButton.addEventListener("click", () => {
+    formRow.classList.toggle("hidden");
+    console.log(formRow);
+    formRow.querySelectorAll("input, select, textarea").forEach((input) => {
+      input.setAttribute("readonly", true);
+    });
+    formRow.querySelectorAll("button").forEach((button) => {
+      button.classList.add("hidden");
+    });
+  });
+});
+
+$(document).ready(function(){
+  $('.rotate-arrow').on('click', function(){
+    $(this).toggleClass('open');
+  });
+});
+
+$(document).ready(function(){
+  $('.cancel-button').on('click', function(){
+    const arrowButton = $(this).closest('tr').prev().find('.rotate-arrow');
+    arrowButton.toggleClass('open');
+  });
+});
+
+
+$(document).ready(function(){
+  $('.update-button').on('click', function(){
+    const arrowButton = $(this).closest('tr').find('.rotate-arrow');
+    const tableRow = $(this).closest('tr').next('.edit-form').first();
+    if (tableRow.hasClass("hidden")) {
+      arrowButton.toggleClass('open');
+    }
+  });
+});
+
+
+
+// Cancel button click event listener
+const cancelButton = document.querySelectorAll(".cancel-button");
+
+cancelButton.forEach((button) => {
+  button.addEventListener("click", () => {
+    const formRow = button.parentElement.parentElement.parentElement.parentElement;
+    const form = formRow.querySelector(".edit-form");
+    const saveButton = form.querySelector(".save-button");
+    const cancelButton = form.querySelector(".cancel-button");
+    saveButton.classList.add("hidden");
+    cancelButton.classList.add("hidden");
+    form.querySelectorAll("input, select, textarea").forEach((input) => {
+      input.setAttribute("readonly", true);
+    });
+    formRow.classList.add("hidden");
+  });
+});
+
+
+// Get the form and buttons
+const updateButtons = document.querySelectorAll(".update-button");
+
+updateButtons.forEach((updateButton) => {
+  updateButton.addEventListener("click", () => {
+    const courseId = updateButton.parentElement.parentElement.querySelector("td:nth-child(2)").textContent;
+
+    const request = new XMLHttpRequest();
+    request.open("POST", `/get_course_data/${courseId}`);
+    request.send();
+  
+    request.onreadystatechange = function () {
+      if (request.readyState === XMLHttpRequest.DONE && request.status === 200) {
+        const course = JSON.parse(request.responseText);
+        const formRow = updateButton.parentElement.parentElement.nextElementSibling;
+        const form = updateButton.parentElement.parentElement.nextElementSibling.querySelector(".edit-form");
+        form.querySelector("#course_name").value = course.course_name;
+        form.querySelector("#course_hours").value = Math.floor(course.course_duration / 60);
+        form.querySelector("#course_minutes").value = course.course_duration % 60;
+        form.querySelector("#course_description").value = course.course_description;
+        form.querySelector("#availability").value = course.availability;
+        form.querySelector("#course-provider").value = course.company;
+        form.querySelector("#enrollment-link").value = course.enrollment_link;
+        form.querySelector("#topic").value = course.topic;
+
+        form.querySelectorAll("input, select, textarea").forEach((input) => {
+          input.removeAttribute("readonly");
+        });
+        const saveButton = form.querySelector(".save-button");
+        const cancelButton = form.querySelector(".cancel-button");
+        formRow.classList.remove("hidden");
+        saveButton.classList.remove("hidden");
+        cancelButton.classList.remove("hidden");
+      }
+    };
+  });
+});
+
+
+</script>

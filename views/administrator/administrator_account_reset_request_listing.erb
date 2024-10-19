@@ -1,0 +1,106 @@
+<%= erb :"common/administrator/administrator_header_dashboard" %>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header" style="margin-top:10px;">Account Reset Request</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <h5>View user account status and view all registered users.</h5>
+                <div class="pull-left col-lg-6 col-md-5 col-sm-4 col-xs-4" style="padding-left:0;margin-top:10px;margin-bottom:10px">
+                  <div class="input-group input-group-lg">
+                      <form action="/user_listing_search" method="get">
+                      <input type="text" class="form-control search_input" placeholder="ID / Username" name="managementUserSearchKeyword" value="<%= h(session[:managementUserSearchKeyword]) if session[:managementUserSearchKeyword] %>">
+                      <span class="input-group-btn">
+                          <button class="btn btn-default" type="submit">Go!</button>
+                      </span>
+                      </form>
+                  </div>
+                </div>
+                <% if session[:managementUserSearchKeyword] %>
+                <form action="/clear_user_listing_search" method="post" class="form-inline">
+                    <button class="btn btn-danger btn-lg" type="submit" style="margin-top:10px">Clear</button>
+                </form>
+                <% end %>
+                <div style="margin-top: 60px"></div>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @requests.each do |request| %>
+                        <tr class="text-left" style="font-size:1rem;">
+                          <td><%= request.request_id %></td>
+                          <td><%= request.username %></td>
+                          <td><%= request.email %></td>
+                          <td>
+                            <% if request.status == "0" %>
+                              Successful
+                            <% elsif request.status == "2" %>
+                              Need Action
+                            <% end %>
+                          </td>
+                          <td> 
+                              <% if request.status == "0" %>
+                                <button type="button" class="btn-success btn">Reset Success</button>
+                              <% elsif request.status == "2" %>
+                                <form method="post" action="/reset-account/<%= request.request_id %>" class="form-inline">
+                                  <button type="submit" class="btn-danger btn">Reset Account</button>
+                                </form>
+                              <% end %>
+                          </td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <link href="css/widgets/modal.css" rel="stylesheet">
+
+    <div class="modal fade" id="unsuspendConfirmation" tabindex="-1" role="dialog" aria-labelledby="unsuspendConfirmationLabel" aria-hidden="true">
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header modal-header-info">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></span>Unsuspend Confirmation</h4>
+          </div>
+          <div class="modal-body">
+            <p>[checkbox must be checked first!] The selected users will be unsuspended.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success">Unsuspend</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="suspendConfirmation" tabindex="-1" role="dialog" aria-labelledby="modalCompose" aria-hidden="true">
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header modal-header-info">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></span> Suspend Confirmation</h4>
+          </div>
+          <div class="modal-body">
+            <p>[checkbox must be checked first!] The selected users will be suspended.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger">Suspend</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<%= erb :"common/administrator/administrator_footer_dashboard" %>

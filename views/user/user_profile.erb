@@ -1,0 +1,7 @@
+<%= erb :"common/user/user_header_dashboard" %>
+  <link href="css/pages/profile.css" rel="stylesheet">
+  <%= erb :"common/profile_form" %>
+  <% if flash[:notice] %>
+    <div class="alert alert-notice"><%= flash[:notice] %></div>
+  <% end %>
+<%= erb :"common/user/user_footer_dashboard" %>

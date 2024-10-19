@@ -1,0 +1,92 @@
+<%= erb :"common/administrator/administrator_header_dashboard" %>
+
+<div class="col-md-12 col-md-offset-3 main">
+    <div class="row">
+      <div class="col-sm-10" style="background-color: white">
+        <div style="margin-left: 10%; margin-right: 10%; margin-bottom: 5%">
+          <% unless @error.nil? %>
+            <p style="color:red"><%= @error %></p>
+          <% end %>
+          <div class="section-title col-md-12">
+            <h2 style="font-weight:bold">Add New Authority</h2>
+            <form id="signup-form" class="needs-validation" novalidate="" method="post" action="/sign-up-authority">
+              <% unless @error.nil? %>
+                <p style="color:red"><%= @error %></p>
+              <% end %>
+              
+              <!-- First Name & Surname input -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label for="inputEmail4">First name</label>
+                    <input type="text" name="first_name" class="form-control" placeholder="First Name" required="">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-outline">
+                    <label for="inputEmail4">Surname</label>
+                    <input type="text" name="surname" class="form-control" placeholder="Surname" required="">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email input -->
+              <label for="inputEmail4">Email</label>
+              <div class="form-outline mb-4" style="margin-bottom: 10px">
+                <input type="email" name="email" class="form-control" placeholder="Email address">
+              </div>
+
+              <!-- Username input -->
+              <div class="form-outline mb-4" style="margin-bottom: 10px">
+                <label for="inputEmail4">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="preferred: manager1">
+              </div>
+
+              <!-- Username input -->
+              <div class="form-outline mb-4" style="margin-bottom: 10px">
+                <label for="inputEmail4">Account Type</label>
+                <select name="account_type" class="form-control">
+                    <option value="Moderator">Moderator</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="Moderator + User">Moderator + User</option>
+                    <option value="Manager + User">Manager + User</option>
+                    <option value="Administrator + User">Administrator + User</option>
+                </select>
+              </div>
+
+              <!-- Password input -->
+              <label for="inputEmail4">Password</label>
+              <div class="form-outline mb-4" style="margin-bottom: 10px">
+                <input type="password" name="password" class="form-control" value="<%= h @password %>" placeholder="Password" required="">
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block mb-4" value="Submit" width=20px>
+                Register Authority
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script>
+  function disableReadOnly() {
+    var buttonDisable = document.getElementById("buttonDisable");
+    var buttonUpdate = document.getElementById("buttonUpdate");
+    var link = document.getElementById("link");
+    var supporting_document = document.getElementById("supporting-document");
+    var notes = document.getElementById("notes");  
+
+    buttonDisable.style.display = "none";
+    buttonUpdate.style.display = "inline-block";
+    link.readOnly = false;
+    supporting_document.readOnly = false;
+    notes.readOnly = false;
+  }
+</script>
+
+<%= erb :"common/administrator/administrator_footer_dashboard" %>
+

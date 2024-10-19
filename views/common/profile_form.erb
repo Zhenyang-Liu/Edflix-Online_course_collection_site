@@ -1,0 +1,252 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h2 class="page-header" >Profile</h2>
+    <div class="container">
+        <div class="main-body">
+          <% if flash[:success] %>
+            <div class="alert alert-success"><%= flash[:success] %></div>
+          <% end %>
+          <% if flash[:error] %>
+            <% flash[:error].each do |message| %>
+              <div class="alert alert-danger">
+                <%= message %>
+              </div>
+            <% end %>
+          <% end %>
+            <div class="row gutters-sm">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                        <form method="post" class="needs-validation" novalidate="" action="/update-profile">
+                          <div class="form-group row">
+                            <label for="userID" class="col-sm-2 col-form-label">User ID</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="user_id" id="user-id" readonly class="form-control" value="<%= @user_id %>">
+                              <% if @user.errors.include?("user_id") %>
+                                <% @user.errors["user_id"].each do |error| %>
+                                  <p class="error" style="color: red"><strong>User ID <%= error %></strong></p>
+                                <% end %>
+                              <% end %>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="username" class="col-sm-2 col-form-label">Username</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="username" id="username" class="form-control" value="<%= @username %>" placeholder="username" readonly>
+                              <% if @user.errors.include?("username") %>
+                                <% @user.errors["username"].each do |error| %>
+                                  <p class="error" style="color: red"><strong>Username <%= error %></strong></p>
+                                <% end %>
+                              <% end %>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="email" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                              <input type="email" name="email" id="email" readonly class="form-control" value="<%= @email %>" placeholder="email@email.com" required="">
+                              <% if @user.errors.include?("email") %>
+                                <% @user.errors["email"].each do |error| %>
+                                  <p class="error" style="color: red"><strong>Email <%= error %></strong></p>
+                                <% end %>
+                              <% end %>
+                              <div class="invalid-feedback">
+                                Invalid email or it's empty
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="first_name" id="first-name" readonly class="form-control" value="<%= @first_name %>" placeholder="First Name" required="">
+                              <% if @user.errors.include?("first_name") %>
+                                <% @user.errors["first_name"].each do |error| %>
+                                  <p class="error" style="color: red"><strong>First Name <%= error %></strong></p>
+                                <% end %>
+                              <% end %>
+                              <div class="invalid-feedback">
+                                First name cannot be empty
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="surname" class="col-sm-2 col-form-label">Surname</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="surname" id="surname" readonly class="form-control" value="<%= @surname %>" placeholder="Surname" required="">
+                              <% if @user.errors.include?("surname") %>
+                                <% @user.errors["surname"].each do |error| %>
+                                  <p class="error" style="color: red"><strong>Surname <%= error %></strong></p>
+                                <% end %>
+                              <% end %>
+                              <div class="invalid-feedback">
+                                Surname name cannot be empty
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="accountStatus" class="col-sm-2 col-form-label">Account Status</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="account-status" readonly class="form-control" placeholder="<%= @account_status %>">
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="academicMajor" class="col-sm-2 col-form-label">Academic Major</label>
+                            <div class="col-sm-10">
+                                <select name="academic_major" id="academic-major" disabled class="form-control" value="<%= @academic_major %>" placeholder="Academic Major" required="">
+                                  <option <%= 'selected' if @academic_major == '' %>>Select One</option>
+                                  <option value="Computer Science" <%= 'selected' if @academic_major == 'Computer Science' %> >Computer Science</option>
+                                  <option value="Biology" <%= 'selected' if @academic_major == 'Biology' %>>Biology</option>
+                                  <option value="Chemistry" <%= 'selected' if @academic_major == 'Chemistry' %>>Chemistry</option>
+                                  <option value="Physics" <%= 'selected' if @academic_major == 'Physics' %>>Physics</option>
+                                  <option value="Mechanical engineering" <%= 'selected' if @academic_major == 'Mechanical Engineering' %>>Mechanical Engineering</option>
+                                  <option value="Mathematics" <%= 'selected' if @academic_major == 'Mathematics' %>>Mathematics</option>
+                                  <option value="History" <%= 'selected' if @academic_major == 'History' %>>History</option>
+                                  <option value="Health and Psychology" <%= 'selected' if @academic_major == 'Health and Psychology' %>>Health and Psychology</option>
+                                  <option value="Finance" <%= 'selected' if @academic_major == 'Finance' %>>Finance</option>
+                                  <option value="Law and Politics" <%= 'selected' if @academic_major == 'Law and Politics' %>>Law and Politics</option>
+                                </select>
+                                <!-- <input type="submit" value="Submit" /> -->
+                              <% if @user.errors.include?("academic_major") %>
+                                <% @user.errors["academic_major"].each do |error| %>
+                                  <p class="error" style="color: red"><strong>Academic major <%= error %></strong></p>
+                                <% end %>
+                              <% end %>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="academicLevel" class="col-sm-2 col-form-label">Academic Level</label>
+                            <div class="col-sm-10">
+                              <select name="academic_level" id="academic-level" disabled class="form-control" value="<%= @academic_major %>" placeholder="Academic Major" required="">
+                                <option <%= 'selected' if @academic_major == '' %>>Select One</option>
+                                <option value="Computer Science" <%= 'selected' if @academic_major == 'Computer Science' %> >Undergraduate</option>
+                                <option value="Biology" <%= 'selected' if @academic_major == 'Biology' %>>Postgraduate</option>
+                              </select>
+                              <% if @user.errors.include?("academic_level") %>
+                                <% @user.errors["academic_level"].each do |error| %>
+                                  <p class="error" style="color: red"><strong>Academic level <%= error %></strong></p>
+                                <% end %>
+                              <% end %>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="updatedAt" class="col-sm-2 col-form-label">Updated At</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="updated-at" readonly class="form-control" value="<%= @sign_up_date %>" placeholder="N/A">
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row">
+                            <label for="accountType" class="col-sm-2 col-form-label">Account Type</label>
+                            <div class="col-sm-10">
+                              <input type="text" name="account-type" readonly class="form-control" placeholder="<%= @account_type %>">
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                              <div class="col-sm-12 text-center">   
+                                <button class="btn-info btn" type="button" id="buttonDisable" onclick="disableReadOnly()">Click to Edit Profile</button>  
+                                <button class="btn-success btn" type="submit" style="display: none" id="buttonUpdate">Update Profile</button>
+                              </div> 
+                          </div>
+                        </form>
+                        <hr>
+                        <form id="signin-form" method="post" class="needs-validation" novalidate="" action="/assign-new-password">
+                          <div class="form-group row">
+                            <label for="password" class="col-sm-2 col-form-label">Password</label>
+                              <div class="col-sm-8">
+                                <input type="text" name="password" id="password" readonly class="form-control" placeholder="********" required="">
+                                <div class="invalid-feedback">
+                                  Password cannot be empty
+                                </div>
+                              </div>
+                              <div class="col-sm-2">
+                                <button class="btn-info btn" id="buttonDisablePassword" onclick="disableReadOnlyPassword()">Change Password</button>
+                                <button class="btn-success btn" type="submit" style="display: none" id="buttonChangePassword">Save Password</button>
+                              </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  function disableReadOnly() {
+    var buttonDisable = document.getElementById("buttonDisable");
+    var buttonUpdate = document.getElementById("buttonUpdate");
+    var first_name = document.getElementById("first-name");
+    var surname = document.getElementById("surname");
+    var email = document.getElementById("email");
+    var academic_major = document.getElementById("academic-major");
+    var academic_level = document.getElementById("academic-level");  
+
+    buttonDisable.style.display = "none";
+    buttonUpdate.style.display = "inline-block";
+    first_name.readOnly = false;
+    surname.readOnly = false;
+    email.readOnly = false;
+    academic_major.removeAttribute("disabled");
+    academic_level.removeAttribute("disabled")
+    selected_one.removeAttribute("selected");
+    academic_level.readOnly = false;
+  }
+
+  function disableReadOnlyPassword() {
+    var buttonDisable = document.getElementById("buttonDisablePassword");
+    var buttonUpdate = document.getElementById("buttonChangePassword");
+    var password = document.getElementById("password");
+
+    buttonDisable.style.display = "none";
+    buttonUpdate.style.display = "inline-block";
+    password.readOnly = false;
+  }
+
+  $(document).ready(function() {
+    $("#show_hide_password a").on('click', function(event) {
+        event.preventDefault();
+        if($('#show_hide_password input').attr("type") == "text"){
+            $('#show_hide_password input').attr('type', 'password');
+            $('#show_hide_password i').addClass( "fa-eye-slash" );
+            $('#show_hide_password i').removeClass( "fa-eye" );
+        }else if($('#show_hide_password input').attr("type") == "password"){
+            $('#show_hide_password input').attr('type', 'text');
+            $('#show_hide_password i').removeClass( "fa-eye-slash" );
+            $('#show_hide_password i').addClass( "fa-eye" );
+        }
+    });
+});
+
+</script>
+
+<script type="text/javascript">
+      (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+          .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+              }
+
+              form.classList.add('was-validated')
+            }, false)
+          })
+      })()
+    </script>
+
+  

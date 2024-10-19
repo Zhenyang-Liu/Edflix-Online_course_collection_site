@@ -1,0 +1,86 @@
+<%= erb :"common/user/user_header_dashboard" %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500&amp;subset=latin-ext" rel="stylesheet">
+    <link href="css/widgets/cardview.css" rel="stylesheet">
+    <link href="css/pages/user_my_course.css" rel="stylesheet">
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header" style="font-size:1.6rem;">My Courses</h2>
+        <div class="row">
+            <div class="col-sm-7">
+                <% if @enrollments.any? { |e| e.is_completed== 0} %>
+                    <h4 class="h4" style="font-size:1.3rem;">Courses in progress</h4>
+                <% end %>
+                <div>
+                    <% @enrollments.each do |enrollment| %>
+                      <% if enrollment.is_completed == 0 %>
+                        <div class="card float-right">
+                            <div class="row">
+                            <div class="col-sm-3">
+                                <img class="img-responsive" style="height:100% !important;" src="https://picsum.photos/150?image=641" alt="">
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="card-block">
+                                <div class="h2" style="font-size:1.1rem !important; margin-top:0"><%= enrollment.course.course_name %></div>
+                                    <p class="text-primary" style="font-size:1rem !important;">In progress</p>
+                                    <p class="text-muted" style="font-size:0.9rem !important;">Start from: <%= enrollment.start_date %></p>
+                                    <div class="row" style="margin: 0;">
+                                        <a href="<%= enrollment.course.enrollment_link %>" class="btn btn-primary btn-md float-right">Resume Course</a>
+                                        <form action="/mark_course_completed/<%= enrollment.course.course_id %>" method="post" class="form-inline">
+                                           <button class="btn btn-info" type="submit" style="margin-left: 0.5rem;">Mark Completed</button>
+                                        </form>
+                                        <a class="btn btn-info" style="margin-left: 0.5rem;" id="<%= enrollment.course.enrollment_link %>" onClick="copyText(id)">Share</a>
+                                        <script>
+                                            function copyText(id) {
+                                        
+                                                /* Copy text into clipboard */
+                                                navigator.clipboard.writeText
+                                                    (id);            
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                      <% end %>
+                    <% end %>
+                </div>
+
+                <% if @enrollments.any? { |e| e.is_completed== 1} %>
+                    <h4 class="h4" style="font-size:1.3rem;  margin-top:3vh;">Courses completed</h4>
+                <% end %>
+                
+                <div>
+                    <% @enrollments.each do |enrollment| %>
+                     <% if enrollment.is_completed == 1 %>
+                        <div class="card float-right">
+                            <div class="row">
+                            <div class="col-sm-3">
+                                <img class="img-responsive" style="height:100% !important;" src="https://picsum.photos/150?image=641" alt="">
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="card-block">
+                                <div class="h2" style="font-size:1.1rem !important; margin-top:0"><%= enrollment.course.course_name %></div>
+                                    <p class="text-success" style="font-size:1rem !important;">Completed</p>
+                                    <p class="text-muted" style="font-size:0.9rem !important;">Completed at: <%= enrollment.completed_date %></p>
+                                    <div class="row" style="margin: 0;">
+                                        <a href="<%= enrollment.course.enrollment_link %>" class="btn btn-primary btn-md float-right">Review</a>
+                                        <form action="/mark_course_incompleted/<%= enrollment.course.course_id %>" method="post" class="form-inline">
+                                            <button class="btn btn-warning" type="submit" style="margin-left: 0.5rem;">Mark Incompleted</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                     <% end %>
+                    <% end %>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <link href="css/widgets/cardview_recommendation.css" rel="stylesheet">
+            </div>
+        </div>
+    </div>
+
+    <%= erb :"common/user/user_footer_dashboard" %>

@@ -1,0 +1,112 @@
+<%= erb :"common/course_provider/course_provider_header_dashboard" %>
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+  <h2 class="page-header">Account Creation Application</h2>
+    <form method="post" action="/course-provider-update-application?request_id=<%= @request_id %>">
+      <div class="row">
+        <div class="col-md-8 mb-4">
+            <div class="card mb-4">
+              <div class="card-body">
+                  <!-- 2 column grid layout with text inputs for the first and last names -->
+                  <div class="row mb-4">
+                    <div class="col">
+                      <div class="form-outline">
+                        <label class="form-label" for="form7Example1">Company Name</label>
+                        <input type="text" name="company_name" id="company-name" value="<%= @company_name %>" class="form-control" readonly=true/>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-outline">
+                        <label class="form-label" for="form7Example2">Company Email</label>
+                        <input type="text" name="company_email" id="company-email" value="<%= @company_email %>" class="form-control" readonly=true/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Username input -->
+                  <div class="form-outline mb-4" style="margin-bottom: 10px">
+                    <label for="inputEmail4">Request ID</label>
+                    <input type="text" name="request_id" id="request-id" class="form-control" placeholder="Username" value="<%=  @request_id %>" readonly=true>
+                  </div>
+        
+                  <!-- Email input -->
+                  <div class="form-outline mb-4">
+                  <label class="form-label" for="form7Example5">Website | Link</label>
+                    <input type="text" name="link" id="link" value="<%= @link %>" class="form-control" readOnly=true/>
+                  </div>
+
+                  <!-- Account-Type -->
+                  <input type="hidden" name="account_type" id="account_type" value="<%= session[:account_type] %>" class="form-control" readOnly=true/>
+        
+                  <!-- Number input -->
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form7Example6">Supporting Document</label>
+                    <input type="text" name="supporting_document" id="supporting-document" value="<%= @supporting_document %>" class="form-control" readOnly=true/>
+                  </div>
+        
+                  <!-- Message input -->
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form7Example7">Notes</label>
+                    <textarea type="text" class="form-control" name="notes" id="notes" rows="4" readOnly=true><%= @notes %></textarea>
+                  </div>
+              </div>
+            </div>
+        </div>
+      
+        <div class="col-md-4 mb-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="card-header py-3">
+                <h4 class="mb-10">Request Status:</h4>
+              </div>
+              <% if @status == "0" %>
+                  <button type="button" class="btn btn-success btn-md btn-block">
+                    Approved
+                  </button>
+              <% elsif @status == "1" %>
+                  <button type="button" class="btn btn-danger btn-md btn-block">
+                    Rejected
+                  </button>
+                  <div class="card-header py-3">
+                    <h4 class="mb-10">Action Taken:</h4>
+                  </div>
+                  <div class="row">
+                      <div class="col-sm-12 text-center">     
+                        <button class="btn-info btn" type="button" id="buttonDisable" onclick="disableReadOnly()">Click to Edit Application</button>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-sm-12 text-center">     
+                        <button class="btn-success btn" type="submit" style="display: none" id="buttonUpdate">Update Profile</button>
+                      </div> 
+                  </div>
+              <% elsif @status == "2" %>
+                <button type="button" class="btn btn-primary btn-md btn-block">
+                  Awaiting Approval
+                </button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+</div>
+
+<script>
+  function disableReadOnly() {
+    var buttonDisable = document.getElementById("buttonDisable");
+    var buttonUpdate = document.getElementById("buttonUpdate");
+    var link = document.getElementById("link");
+    var supporting_document = document.getElementById("supporting-document");
+    var notes = document.getElementById("notes");  
+
+    buttonDisable.style.display = "none";
+    buttonUpdate.style.display = "inline-block";
+    link.readOnly = false;
+    supporting_document.readOnly = false;
+    notes.readOnly = false;
+  }
+</script>
+
+<%= erb :"common/course_provider/course_provider_footer_dashboard" %>
+

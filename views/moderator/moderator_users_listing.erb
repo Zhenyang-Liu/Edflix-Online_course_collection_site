@@ -1,0 +1,156 @@
+<%= erb :"common/moderator/moderator_header_dashboard" %>
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header" style="margin-top:10px;">Users Listing</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <h5 style="font-size:1rem;">View user account status and view all registered users.</h5>
+                <div class="pull-left col-lg-6 col-md-5 col-sm-4 col-xs-4" style="padding-left:0;margin-top:10px;margin-bottom:10px">
+                  <div class="input-group input-group-lg">
+                      <form action="/user_listing_search_moderator" method="get">
+                      <input type="text" class="form-control search_input" placeholder="ID / Username" name="managementUserSearchKeyword" value="<%= h(session[:managementUserSearchKeyword]) if session[:managementUserSearchKeyword] %>">
+                      <span class="input-group-btn">
+                          <button class="btn btn-default" type="submit">Go!</button>
+                      </span>
+                      </form>
+                  </div>
+                </div>
+                <% if session[:managementUserSearchKeyword] %>
+                <form action="/clear_user_listing_search_moderator" method="post" class="form-inline">
+                    <button class="btn btn-danger btn-lg" type="submit" style="margin-top:10px">Clear</button>
+                </form>
+                <% end %>
+                <div class="pull-right hidden">
+                  <div class="row">
+                      <div class="btn-group">
+                          <button type="button" class="btn btn-success btn-filter" data-toggle="modal"
+                              data-target="#modalBroadcast" style="margin-right: 10px">Broadcast</button>
+                          <button type="button" class="btn btn-warning btn-filter" data-toggle="modal"
+                              data-target="#modalCompose">Send Message</button>
+                      </div>
+                      <div style="padding-right: 10px"></div>
+                      <div class="input-group rounded">
+                          <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                              aria-describedby="search-addon" />
+                          <span class="input-group-text border-0" id="search-addon">
+                              <i class="fas fa-search"></i>
+                          </span>
+                      </div>
+                  </div>
+                </div>
+                
+                <div style="margin-top: 60px"></div>
+                <thead>
+                    <tr style="font-size:1rem;">
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Account Type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @users.each do |user| %>
+                      <tr class="text-left" style="font-size:1rem;">
+                        <td><%= user.user_id %></td>
+                        <td><%= user.username %></td>
+                        <td><%= user.email %></td>
+                        <td>
+                            <% if user.account_type.to_i == 1 %>
+                              User
+                            <% elsif user.account_type.to_i == 2 %>
+                              Moderator
+                            <% elsif user.account_type.to_i == 3 %>
+                              Manager
+                            <% else %>
+                              Admin
+                            <% end %>
+                        </td>
+                        <td>
+                            <% if user.is_suspended == 1 %>
+                              Suspended
+                            <% else %>
+                              Normal
+                            <% end %>
+                        </td>
+                        <td><%= user.sign_up_date %></td>
+                      </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <link href="css/widgets/modal.css" rel="stylesheet">
+
+    <div class="modal fade" id="modalBroadcast" tabindex="-1" role="dialog" aria-labelledby="modalBroadcast" aria-hidden="true">
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header modal-header-info">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></span> Broadcast Message</h4>
+          </div>
+          <div class="modal-body">
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputTo"></span>To</label>
+                  <div class="col-sm-10"><input type="email" class="form-control" id="inputTo" placeholder="comma separated list of recipients"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputSubject"></span>Subject</label>
+                  <div class="col-sm-10"><input type="text" class="form-control" id="inputSubject" placeholder="subject"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-12" for="inputBody"></span>Message</label>
+                  <div class="col-sm-12"><textarea class="form-control" id="inputBody" rows="8"></textarea></div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> 
+            <button type="button" class="btn btn-primary ">Send <i class="fa fa-arrow-circle-right fa-lg"></i></button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalCompose" tabindex="-1" role="dialog" aria-labelledby="modalCompose" aria-hidden="true">
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header modal-header-info">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></span> Compose Message</h4>
+          </div>
+          <div class="modal-body">
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputTo"></span>To</label>
+                  <div class="col-sm-10"><input type="email" class="form-control" id="inputTo" placeholder="comma separated list of recipients"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2" for="inputSubject"></span>Subject</label>
+                  <div class="col-sm-10"><input type="text" class="form-control" id="inputSubject" placeholder="subject"></div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-12" for="inputBody"></span>Message</label>
+                  <div class="col-sm-12"><textarea class="form-control" id="inputBody" rows="8"></textarea></div>
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> 
+            <button type="button" class="btn btn-primary ">Send <i class="fa fa-arrow-circle-right fa-lg"></i></button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+<%= erb :"common/moderator/moderator_footer_dashboard" %>

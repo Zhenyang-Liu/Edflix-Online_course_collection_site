@@ -1,0 +1,66 @@
+.pills-rounded .nav-item .nav-link {
+    border-radius: 10em;
+}
+
+.pills-light-purple .nav-item .nav-link.active {
+    background-color: #689ac8;
+    color: #fff;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.pills-outline-red .nav-item .nav-link {
+    border: 2px solid #fff;
+    color: #fff;
+    background-color: transparent;
+}
+
+.pills-outline-red .nav-item .nav-link:hover {
+    border: 2px solid #fff;
+}
+
+.pills-outline-red .nav-item .nav-link.active {
+    border: 2px solid #f44336;
+    color: #f44336;
+}
+
+.pills-outline-red .nav-item .nav-link.active:hover {
+    border: 2px solid #f44336;
+    color: #f44336;
+}
+
+.pills-outline-green .nav-item .nav-link {
+    border: 2px solid #fff;
+    color: #fff;
+    background-color: transparent;
+}
+
+.pills-outline-green .nav-item .nav-link:hover {
+    border: 2px solid #eee;
+}
+
+.pills-outline-green .nav-item .nav-link.active {
+    border: 2px solid #4caf50;
+    color: #4caf50;
+}
+
+.pills-outline-green .nav-item .nav-link.active:hover {
+    border: 2px solid #4caf50;
+    color: #4caf50;
+}
+
+.pills-peach-gradient .nav-item .nav-link.active {
+    background: linear-gradient(40deg, #FFD86F, #FC6262);
+}
+
+.pills-blue-gradient .nav-item .nav-link.active {
+    background: linear-gradient(40deg, #45cafc, #303f9f);
+}
+
+.pills-purple-gradient .nav-item .nav-link.active {
+    background: linear-gradient(40deg, #ff6ec4, #7873f5);
+}
+
+.pills-aqua-gradient .nav-item .nav-link.active {
+    background: linear-gradient(40deg, #2096ff, #05ffa3);
+}

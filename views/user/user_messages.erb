@@ -1,0 +1,55 @@
+<% @subtitle = "Messages" %>
+<%= erb :"common/user/user_header_dashboard" %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <h2 class="page-header">Messages</h2>
+      <div class="table-responsive">
+        <form class="form-inline">
+          <div class="form-group">
+            <label for="subject_search">Look up a specific message:</label>
+            <input type="text" class="form-control" name="subject_search" id="subject_search" value="<%= h @subject_search %>" placeholder="Subject" />
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 5px;">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Broadcast ID</th>
+              <th>Subject</th>
+              <th>Content</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @broadcasts.each do |broadcast| %>
+              <tr>
+                <td><%= h broadcast.broadcast_id %></td>
+                <td><%= h broadcast.subject %></td>
+                <td><%= h broadcast.content %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+label {
+  font-size: 1rem;
+}
+tr{
+  font-size: 0.8rem;
+}
+</style>
+
+
+<%= erb :"common/user/user_footer_dashboard" %>

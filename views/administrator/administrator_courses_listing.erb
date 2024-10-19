@@ -1,0 +1,204 @@
+<%= erb :"common/administrator/administrator_header_dashboard" %>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h2 class="page-header" style="margin-top:10px;">Courses Listing</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+            <div class="pull-left col-lg-6 col-md-5 col-sm-4 col-xs-4" style="padding-left:0;margin-top:10px;margin-bottom:10px">
+              <div class="input-group input-group-lg print">
+                <form action="/administrator_course_listing_search" method="get">
+                  <input type="text" class="form-control search_input" placeholder="Search for..." name="managementSearchKeyword" value="<%= h(session[:managementSearchKeyword]) if session[:managementSearchKeyword] %>">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Go!</button>
+                  </span>
+                </form>
+              </div>
+            </div>  
+            <% if session[:managementSearchKeyword] %>
+              <form action="/administrator_clear_listing_search" method="post" class="form-inline">
+                <button class="btn btn-danger btn-lg print" type="submit" style="margin-top:10px">Clear</button>
+              </form>
+            <% end %>
+            <button type="button" class="btn btn-success btn-filter pull-right row btn-lg print" data-target="" style="margin-right: 10px;margin-top:10px;margin-bottom:10px" onclick="window.print();">Print Report</button>
+              <div style="margin-top: 60px"></div>
+              <thead>
+                <tr class="h4">
+                  <th>Details</th>
+                  <th>ID</th>
+                  <th>Course Name</th>
+                  <th>Status</th>
+                  <th>Updated At</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @courses.each do |course| %>
+                  <tr class="text-left" style="font-size:1rem;">
+                    <td>
+                      <button type="button" class="btn btn-link rotate-arrow">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                      </button>
+                    </td>
+                    <td ><%= course.course_id %></td>
+                    <td><%= course.course_name %></td>
+                    <td>
+                      <% if course.availability.to_i == 1 %>
+                        Available
+                      <% else %>
+                        Not Available
+                      <% end %>
+                    </td>
+                    <td><%= course.updated_at %></td>
+                  </tr>
+                  <tr class="edit-form form-container hidden" >
+                    <td></td>
+                    <td colspan="4">
+                      <form class="edit-form form-detail" action="update_course/<%= course.course_id%>" method="post" style="width:85%;">
+                        <div class="form-group">
+                          <label for="course_name" class="control-label">Course Name:</label>
+                          <input id="course_name" type="text" name="course_name" class="form-control" value="<%= course.course_name %>" readonly>
+                        </div>
+                        <div class="form-group">
+                          <label for="course_duration" class="control-label">Course Duration:</label>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <input id="course_hours" type="number" name="course_hours" class="form-control" value="<%= course.course_duration / 60 %>" readonly>
+                              <label for="course_hours">Hours</label>
+                            </div>
+                            <div class="col-sm-6">
+                              <input id="course_minutes" type="number" name="course_minutes" class="form-control" value="<%= course.course_duration % 60 %>" readonly>
+                              <label for="course_minutes">Minutes</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="course_description" class="control-label">Description:</label>
+                          <textarea id="course_description" name="course_description" class="form-control" readonly><%= course.course_description %></textarea>
+                        </div>
+                        <div class="form-group">
+                          <label for="availability" class="control-label" >Availability:</label>
+                          <select id="availability" name="availability" class="form-control" readonly>
+                            <option value="1" <%= "selected" if course.availability.to_i == 1 %>>Available</option>
+                            <option value="0" <%= "selected" if course.availability.to_i == 0 %>>Not Available</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="course-provider" class="control-label">Course Provider:</label>
+                          <input id="course-provider" type="text" name="company" class="form-control" value="<%= course.company %>" readonly>
+                        </div>
+                        <div class="form-group">
+                          <label for="enrollment-link" class="control-label">Enrollment Link:</label>
+                          <input id="enrollment-link" type="text" name="enrollment_link" class="form-control" value="<%= course.enrollment_link %>" readonly>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Course Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>[checkbox must be checked first!] This course will be deleted. Please click button below to delete.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">How to Update Course</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Please select one course from the listing to update the course.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+  td{
+    vertical-align: middle !important;
+  }
+
+  .rotate-arrow {
+    outline: none !important;
+    border: none;
+    background-color: transparent;
+    padding: 10px 10px;
+  }
+
+  .rotate-arrow span {
+    transition: transform 0.3s ease-out;
+  }
+
+  .rotate-arrow.open span {
+    transform: rotate(90deg);
+  }
+
+  textarea {
+    width: auto;
+    max-width: 55vw;
+  }
+
+  @media (min-width: 992px) {
+    .table-responsive {
+      overflow-x: hidden;
+    }
+  }
+
+  @media print {
+    .print {
+      display: none;
+    }
+  }
+
+  </style>
+  <script>
+    const arrowButtons = document.querySelectorAll(".rotate-arrow");
+
+    arrowButtons.forEach((arrowButton) => {
+      const formRow = arrowButton.parentElement.parentElement.nextElementSibling;
+      arrowButton.addEventListener("click", () => {
+        formRow.classList.toggle("hidden");
+        console.log(formRow);
+        formRow.querySelectorAll("input, select, textarea").forEach((input) => {
+          input.setAttribute("readonly", true);
+        });
+        formRow.querySelectorAll("button").forEach((button) => {
+          button.classList.add("hidden");
+        });
+      });
+    });
+
+    $(document).ready(function(){
+      $('.rotate-arrow').on('click', function(){
+        $(this).toggleClass('open');
+      });
+    });
+  </script>
+<%= erb :"common/administrator/administrator_footer_dashboard" %>
+

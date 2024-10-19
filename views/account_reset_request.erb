@@ -1,0 +1,58 @@
+<%= erb :"common/header" %>
+<div class="row">
+  <div class="col-sm-9" style="background-color: white">
+    <div style="margin: 3%">
+      <% unless @account_reset_request_form.errors.size.zero? %>
+        <div class="alert alert-danger">
+          <strong>Please correct the errors below:</strong>
+        </div>
+      <% end %>
+      <% if flash[:error] %>
+        <% flash[:error].each do |message| %>
+          <div class="alert alert-danger">
+            <%= message %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <% if flash[:success] %>
+        <div class="alert alert-success">
+         <%= flash[:success] %>
+        </div>
+      <% end %>
+
+      <form method="post" class="contactform contact_form" id="contact_form">
+        <div class="section-title col-md-12">
+          <h2 style="font-weight:bold">Resetting Your Password</h2>
+          <p>Please fill in this form. We will review your details and will reach you out through email.</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputUsername">Username</label>
+            <input type="text" class="form-control" name="username" placeholder="Username">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputEmail">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Email">
+          </div>
+        </div>
+        <div class="form-group col-md-12">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div style="margin: 3%">
+      <ul class="list-group text-primary">
+        <li class="list-group-item"><a href="/account-reset-request-email">Reset password by email</a></li>
+        <li class="list-group-item"><a href="/account-reset-request">Reset account by contacting us</a></li>
+        <li class="list-group-item"><a href="/user_course_referral">Recommend a course</a></li>
+        <li class="list-group-item"><a href="/account-request?account_type=5">Becoming a course provider</a></li>
+        <li class="list-group-item"><a href="/contact">Other</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<%= erb :"common/footer" %>
+

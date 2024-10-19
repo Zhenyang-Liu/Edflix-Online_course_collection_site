@@ -1,0 +1,93 @@
+<%= erb :"common/user/user_header_dashboard" %>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 col-lg-11 col-lg-offset-1 main">
+        <div class="section gray-bg" id="contactus">
+            <div class="container col-md-11 col-lg-9 col-lg-offset-1">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="section-title">
+                            <h2 class="page-header" style="margin-top:10px;">Course Referral</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <h4 style="margin-top:-10px;">Welcome to our 'Recommend a Course' feature! With this tool, you can share courses that you find valuable to add to our course catalogue.</h4>
+                    </div>
+                    
+                </div>
+                <div class="row flex-row-reverse" style="font-size:1.2rem;">
+                    <div class="col-sm-9 col-md-12 col-lg-12 m-15px-tb">
+                        <div class="contact-form">
+                            <form action="course_referral" method="post" class="contactform contact_form" id="contact_form">
+                                <div class="empty_notice invalid-feedback p-15px-b" style="padding-bottom: 10px; margin-top:10px;">Please fill the form</div>
+                                <p>* means required</p>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <input id="course-name" type="text" name="course_name" placeholder="Course Name *" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <input id="course-provider" type="text" name="company" placeholder="Course Provider"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <input id="enrollment-link" type="text" name="enrollment_link" placeholder="Enrollment Link *"
+                                                class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <textarea id="course-description" name="course_description" placeholder="Course Description" class="form-control"
+                                                rows="3"></textarea> 
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="course_duration" class="control-label">Course Duration</label>
+                                            <input id="course_hours" type="number" name="course_hours" placeholder="Hours" class="form-control" min="0" step="1">
+                                            <input id="course_minutes" type="number" name="course_minutes" placeholder="Minutes" class="form-control" min="0" max="59" step="1">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <% if flash[:success] %>
+                            <div class="alert alert-success"><%= flash[:success] %></div>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<style>
+input::placeholder {
+  font-size: 0.9rem;
+}
+textarea::placeholder {
+  font-size: 0.9rem;
+}
+option {
+  font-size: 0.9rem;
+}
+select{
+  font-size: 0.9rem;
+}
+.control-label{
+  font-size: 0.9rem;
+}
+</style>
+<script src="bootstrap-3.3.7/assets/js/additional.js"></script>
+<%= erb :"common/user/user_footer_dashboard" %>

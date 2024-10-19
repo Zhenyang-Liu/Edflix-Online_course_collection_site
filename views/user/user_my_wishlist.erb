@@ -1,0 +1,41 @@
+<%= erb :"common/user/user_header_dashboard" %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500&amp;subset=latin-ext" rel="stylesheet">
+    <link href="css/widgets/cardview.css" rel="stylesheet">
+    <link href="css/pages/user_my_course.css" rel="stylesheet">
+
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <h2 class="page-header">My Course Wishlist</h2>
+        <div class="row">
+            <div class="col-sm-7">
+                <div>
+                    <% @wishlists.each do |wishlist| %>
+                        <div class="card float-right">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <img class="img-responsive" style="height:100% !important;" src="https://picsum.photos/150?image=641" alt="">
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="card-block">
+                                        <a href="/course_detail/<%=wishlist.course.course_id %>" class="h2" style="font-size:1.1rem !important; margin-top:0"><%= wishlist.course.course_name %></a>
+                                        <div class="row" style="margin: 25px 0 0 -8px;">
+                                            <form action="/enroll-course/<%= wishlist.course.course_id %>" method="post" class="form-inline">
+                                                <button class="btn btn-primary" type="submit" style="margin-left: 0.5rem;">Enroll</button>
+                                            </form>
+                                            <form action="/withdraw-from-wishlist/<%= wishlist.course.course_id %>" method="post" class="form-inline">
+                                                <button class="btn btn-danger" type="submit" style="margin-left: 0.5rem;">Withdraw</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <link href="css/widgets/cardview_recommendation.css" rel="stylesheet">
+            </div>
+        </div>
+    </div>
+
+    <%= erb :"common/user/user_footer_dashboard" %>

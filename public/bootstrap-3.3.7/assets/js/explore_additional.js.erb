@@ -1,0 +1,25 @@
+$(document).ready(function() {
+  var showChar = 100;
+  var ellipsis = '...';
+
+  <% @courses.each do |course| %>
+    var intro<%= course.course_id %> = $('#intro-<%= course.course_id %>');
+    var hidden<%= course.course_id %> = intro<%= course.course_id %>.text().substr(showChar);
+
+    <% if course.course_description.length > 100 %>
+      if (intro<%= course.course_id %>.text().length > showChar) {
+        var truncated<%= course.course_id %> = intro<%= course.course_id %>.text().substr(0, showChar) + ellipsis;
+
+        intro<%= course.course_id %>.html(truncated<%= course.course_id %>);
+        $('#show-more-<%= course.course_id %>').show();
+
+        $('#show-more-<%= course.course_id %>').click(function() {
+          intro<%= course.course_id %>.append(hidden<%= course.course_id %>);
+          $('#show-more-<%= course.course_id %>').hide();
+        });
+      } else {
+        $('#show-more-<%= course.course_id %>').hide();
+      }
+    <% end %>
+  <% end %>
+});

@@ -1,0 +1,31 @@
+
+<div class="form-group">
+  <input type="text" name="username" placeholder="Username" class="form-control" value="<%= h @contact_form.username %>" />
+  <% if @contact_form.errors.include?("username") %>
+    <% @contact_form.errors["username"].each do |error| %>
+      <p class="text-danger"><strong>Username <%= error %></strong></p>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="form-group">
+  <input type="text" name="email" placeholder="Email" class="form-control" value="<%= h @contact_form.email %>" />
+  <% if @contact_form.errors.include?("email") %>
+    <% @contact_form.errors["email"].each do |error| %>
+      <p class="text-danger"><strong>Email <%= error %></strong></p>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="form-group">
+  <textarea type="text" name="message" placeholder="Message" rows="8" class="form-control"><%= h @contact_form.message %></textarea>
+  <% if @contact_form.errors.include?("message") %>
+    <% @contact_form.errors["message"].each do |error| %>
+      <p class="text-danger"><strong>Message <%= error %></strong></p>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="form-group">
+  <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+</div>

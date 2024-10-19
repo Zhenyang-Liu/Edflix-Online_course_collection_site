@@ -1,0 +1,154 @@
+
+CREATE TABLE supports (
+    support_id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    username TEXT,
+    email TEXT,
+    message TEXT,
+    authority_id INTEGER,
+    support_status INTEGER,
+    updated_at TEXT
+);
+
+deleted
+CREATE TABLE authority (
+    authority_id INTEGER PRIMARY KEY,
+    account_id INTEGER,
+    username TEXT,
+    password TEXT
+);
+
+CREATE TABLE account_types (
+    account_id INTEGER PRIMARY KEY,
+    account_tags TEXT
+);
+
+CREATE TABLE broadcasts (
+    broadcast_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    authority_id INTEGER,
+    subject TEXT,
+    content TEXT
+    updated_at TEXT
+);
+removed authority_id INTEGER,
+removed updated_at TEXT
+
+CREATE TABLE "courses" (
+	"course_id"	INTEGER,
+	"course_name"	TEXT,
+	"course_description"	TEXT,
+	"course_duration"	INTEGER,
+	"availability"	TEXT,
+	"enrollment_link"	TEXT,
+	"updated_at"	TIMESTAMP,
+	"company"	TEXT,
+	"updated_by"	INTEGER,
+	"topic"	TEXT,
+	"has_image"	INTEGER DEFAULT 0,
+	"trusted"	INTEGER DEFAULT 0,
+	PRIMARY KEY("course_id" AUTOINCREMENT)
+);
+tag TEXT removed frm courses
+
+CREATE TABLE ratings (
+    ratings_id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    course_id INTEGER,
+    rating_value INTEGER
+);
+
+CREATE TABLE reviews (
+    review_id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    course_id INTEGER,
+    review_statement TEXT,
+    updated_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS "users" (
+        "user_id"       INTEGER,
+        "username"      TEXT,
+        "email" TEXT,
+        "password"      BLOB,
+        "first_name"    TEXT,
+        "surname"       TEXT,
+        "is_suspended"  INTEGER DEFAULT 0,
+        "academic_major"        TEXT,
+        "academic_level"        TEXT,
+        "sign_up_date"  TEXT,
+        "account_type"  TEXT DEFAULT 1,
+        "iv"    BLOB,
+        "salt"  BLOB,
+        "request_id"    INTEGER,
+        "company"       TEXT,
+        PRIMARY KEY("user_id" AUTOINCREMENT)
+);
+
+CREATE TABLE contact_forms (
+    contact_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    email TEXT,
+    message TEXT
+);
+
+CREATE TABLE enrollments (
+    user_id INTEGER,
+    course_id INTEGER,
+    is_completed INTEGER,
+    is_favourite INTEGER,
+    ratings TEXT,
+    review TEXT,
+    start_date TIMESTAMP,
+    completed_date TIMESTAMP,
+    PRIMARY KEY (user_id, course_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);
+
+CREATE TABLE courses_waiting_lists(
+    course_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    course_name TEXT,
+    course_description TEXT,
+    course_duration INTEGER,
+    enrollment_link TEXT,
+    availability TEXT,
+    updated_at TIMESTAMP,
+    company TEXT
+);
+
+CREATE TABLE IF NOT EXISTS "account_reset_requests" (
+    "request_id" INTEGER,
+    "username" TEXT,
+    "email" TEXT,
+    PRIMARY KEY ("request_id" AUTOINCREMENT)
+);
+
+CREATE TABLE IF NOT EXISTS "account_creation_requests" (
+        "request_id"    INTEGER,
+        "company_name"  TEXT DEFAULT 'N/A',
+        "company_email" TEXT DEFAULT 'N/A',
+        "account_type"  TEXT,
+        "link"  TEXT DEFAULT 'N/A',
+        "supporting_document"   TEXT DEFAULT 'N/A',
+        "notes" TEXT DEFAULT 'N/A',
+        "status"        TEXT DEFAULT 2,
+        PRIMARY KEY("request_id" AUTOINCREMENT)
+);
+
+CREATE TABLE wishlists (
+user_id INTEGER,
+course_id INTEGER,
+PRIMARY KEY (
+user_id,
+course_id
+),
+FOREIGN KEY (
+user_id
+)
+REFERENCES users (user_id),
+FOREIGN KEY (
+course_id
+)
+REFERENCES courses (course_id) 
+);
+

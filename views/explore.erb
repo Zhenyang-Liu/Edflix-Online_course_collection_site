@@ -1,0 +1,340 @@
+<%= erb :"common/header" %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500&amp;subset=latin-ext" rel="stylesheet">
+    <link href="css/widgets/cardview.css" rel="stylesheet">
+    <link href="css/pages/explore.css" rel="stylesheet">
+
+    <h1 class="page-header">Explore Courses</h1>
+    <% if flash[:enrolled_error] %>
+      <div class="alert alert-danger h4">
+        <%= flash[:enrolled_error] %>
+      </div>
+    <% end %>
+<!-- Grid row -->
+
+<div class="row col-sm-12" style="display: flex; align-items: center; margin: 1.5vw 0 0.5vw 0;" >
+  <div style="padding-right: 0;">
+    <form action="/course_search" method="get" class="form-inline" style="padding-right: 0; margin: 0; padding-top: 0; font-size: 1.5vw">
+      <label for="courseSearchInput">Course Search:</label>
+      <input type="text" id="courseSearchInput" name="courseSearchKeyword" value="<%= h(session[:courseSearchKeyword]) if session[:courseSearchKeyword] %>" required class="form-control ml-2 mr-2" style="width: 20vw"/>
+      <button type="submit" class="btn btn-info">Search</button>
+    </form>
+  </div>
+  
+  <% if session[:courseSearchKeyword] %>
+    <div style="padding: 0; margin-left: 10px;">
+      <form action="/clear_search" method="post" class="form-inline" style="padding: 0; margin: 0;">
+        <button type="submit" class="btn btn-danger">Clear Search</button>
+      </form>
+    </div>
+  <% end %>
+</div>
+
+<div class="row col-sm-12" style="display: flex; align-items: center; margin: 0.5vw 0 1.5vw 0; ">
+  <div style="padding-right: 0;">
+    <form action="/recommendations-ai" method="post" class="form-inline" style="padding-right: 0; margin: 0; padding-top: 0; font-size: 1.5vw">
+      <label style="color: #000080 !important;" for="user_input">AI Recommend:</label>
+      <input type="text" id="user_input" name="user_input" required class="form-control ml-2 mr-2" style="width: 20vw" placeholder="Please describe what interests you"/>
+      <button type="submit" class="btn btn-primary">Generate</button>
+      <img id="ai-recommendation-image" class="hidden" style="width: 2vw;" src="/img/waveline.gif" alt="AI Recommendation" />
+    </form>
+  </div>
+</div>
+
+
+<% if @reasons %>
+    <div class="col-sm-12">
+        <div class="panel panel-success col-sm-12 col-lg-6" style="padding:0;">
+            <div class="panel-heading">
+            <h3 class="panel-title">Reasons for recommendations</h3>
+            </div>
+            <div class="panel-body">
+            <% @reasons.each do |reason| %>
+                <div>
+                <p><%= reason %></p>
+                </div>
+            <% end %>
+            </div>
+        </div>
+    </div>
+<% end %>
+
+<% if @accident %>
+    <div class="col-sm-12">
+        <div class="panel panel-info col-sm-12 col-lg-6" style="padding:0;">
+            <div class="panel-heading">
+            <h3 class="panel-title">Further information needed</h3>
+            </div>
+            <div class="panel-body">
+                <div>
+                <p><%= @accident %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+<% end %>
+
+<div class="row">
+  <div class="col-sm-12 text-right">
+      <form action="/recommendations—for-major" method="get" class="form-inline" style="padding: 0; margin:0 0 1vw 0;">
+        <button type="submit" class="btn btn-success">Recommendations for my major</button>
+      </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 text-right">
+    <form id="filter-sort-form" action="/select_courses" method="get" class="form-inline" style="font-size: 1.2rem">
+      <div class="form-group">
+        <label for="filter">Filter:</label>
+        <select class="form-control" id="filter" name="filter">
+          <option value="" >ALL</option>
+          <option value="Computer Science" <%= 'selected' if @selectedFilter == 'Computer Science' %>>Computer Science</option>
+          <option value="Biology" <%= 'selected' if @selectedFilter == 'Biology' %>>Biology</option>
+          <option value="Chemistry" <%= 'selected' if @selectedFilter == 'Chemistry' %>>Chemistry</option>
+          <option value="Physics" <%= 'selected' if @selectedFilter == 'Physics' %>>Physics</option>
+          <option value="Mechanical engineering" <%= 'selected' if @selectedFilter == 'Mechanical Engineering' %>>Mechanical Engineering</option>
+          <option value="Mathematics" <%= 'selected' if @selectedFilter == 'Mathematics' %>>Mathematics</option>
+          <option value="History" <%= 'selected' if @selectedFilter == 'History' %>>History</option>
+          <option value="Health and Psychology" <%= 'selected' if @selectedFilter == 'Health and Psychology' %>>Health and Psychology</option>
+          <option value="Finance" <%= 'selected' if @selectedFilter == 'Finance' %>>Finance</option>
+          <option value="Law and Politics" <%= 'selected' if @selectedFilter == 'Law and Politics' %>>Law and Politics</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="sort">Sort:</label>
+        <select class="form-control" id="sort" name="sort">
+          <option value="">Default</option>
+          <option value="duration_asc" <%= 'selected' if @selectedSort == 'duration_asc' %>>Duration: Low to high</option>
+          <option value="duration_desc" <%= 'selected' if @selectedSort == 'duration_desc' %>>Duration: High to low</option>
+          <option value="rating_asc" <%= 'selected' if @selectedSort == 'rating_asc' %>>Rating: Low to high</option>
+          <option value="rating_desc" <%= 'selected' if @selectedSort == 'rating_desc' %>>Rating: High to low</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+  </div>
+</div>
+
+<div class="row hidden">
+  <!-- Grid column -->
+  <div class="col-md-10 col-lg-12 col-xl-6">
+
+    <ul class="nav md-pills nav-justified pills-light-purple pills-rounded">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panel65" role="tab">Computer Science</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panel66" role="tab">Business Management</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panel67" role="tab">Biomedical</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panel68" role="tab">Communication</a>
+      </li>
+    </ul>
+
+  </div>
+  <!-- Grid column -->
+</div>
+
+<div class="container-row">
+  <div class="row">
+    <% @courses.each_with_index do |course, index| %>
+      <% enrolled = @enrollments.any? { |e| e.course_id == course.course_id } %>
+      <div class="col-sm-3 card" style="margin-top: 10px">
+        <div class="card card-custom bg-white border-white border-0">
+          <% if course.has_image == 1 %>
+             <div class="card-custom-img" style="background-image: url(/img/course_<%= course.course_id %>.jpg)"></div>
+          <% else %>
+            <% random_number = rand(1..10) %>
+            <div class="card-custom-img" style="background-image: url(/img/random<%= random_number %>.jpg)"></div>
+          <% end %>
+          <% if course.trusted == 1 %>
+               <div class="card-custom-avatar">
+                    <img class="img-fluid"
+                    src="/img/trusted-icon.png"
+                    alt="Avatar" />
+                </div>
+          <% end %>
+          <div class="card-body" style="padding: 14px; overflow-y: auto;">
+            <a href="/course_detail/<%= course.course_id %>" target="_blank" style="font-size: 18px !important;" class="course-name"><%= course.course_name %></a>
+            
+            
+            <% if Rating.calculate_average_rating(course.course_id) != 0 %>
+                <p>
+                  <span style="margin-right:2.5px;" class="glyphicon glyphicon-stats"></span>
+                  <%= Rating.calculate_average_rating(course.course_id) %> / 5.0
+                  <span style="margin:0 2.5px 0 8px;" class="glyphicon glyphicon-time"></span>
+                  <%= course.course_duration / 60 %>h <%= course.course_duration % 60 %>min
+                </p>
+            <% else %>
+               <p>
+                  <span style="margin-right:2.5px;" class="glyphicon glyphicon-stats"></span>
+                  -- / 5.0
+                  <span style="margin:0 2.5px 0 12px;" class="glyphicon glyphicon-time"></span>
+                  <%= course.course_duration / 60 %>h <%= course.course_duration % 60 %>min
+                </p>
+            <% end %>
+            
+
+            <p class="card-text fixed-height" id="intro-<%= course.course_id %>"><%= course.course_description %></p>
+          </div>
+          <div class="card-footer" style="padding: 14px; background: inherit; border-color: inherit; display: flex; align-items: center;">
+            <% if enrolled %>
+              <button type="submit" class="btn btn-success" disabled>Enrolled</button>
+              <form action="/cancel-enrolled-course/<%= course.course_id %>" class="enrollment-form" method="POST" style="display: inline-block; margin: 0 0 0 5px;">
+                <button type="submit" class="btn btn-danger">Cancel</button>
+              </form>
+            <% else %>
+              <form action="/enroll-course/<%= course.course_id %>" class="enrollment-form" method="POST" style="display: inline-block; margin: 0;">
+                <button type="submit" class="btn btn-primary" name="Explore">Enroll</button>
+              </form>
+            <% end %>
+            <a href="#" class="btn btn-outline-primary" id="show-more-<%= course.course_id %>">More</a>
+          </div>
+        </div>
+      </div>
+
+      <% if ((index + 1) % 4) == 0 %>
+        <div class="clearfix visible-sm-block"></div>
+        <div class="clearfix visible-md-block"></div>
+        <div class="clearfix visible-lg-block"></div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+
+
+<script>
+$(document).ready(function() {
+    $("form").on("submit", function(event) {
+      // 如果你想阻止表单的实际提交，请取消注释以下行。
+      // event.preventDefault();
+      $("#ai-recommendation-image").removeClass("hidden");
+    });
+  });
+
+
+
+$(document).ready(function() {
+  var showChar = 285;
+  var ellipsis = '...';
+
+  <% @courses.each do |course| %>
+    var intro<%= course.course_id %> = $('#intro-<%= course.course_id %>');
+    var hidden<%= course.course_id %> = intro<%= course.course_id %>.text().substr(showChar);
+    var fullText<%= course.course_id %> = intro<%= course.course_id %>.text(); // 保存完整的文本
+
+    <% if course.course_description.length > 100 %>
+      if (intro<%= course.course_id %>.text().length > showChar) {
+        var truncated<%= course.course_id %> = intro<%= course.course_id %>.text().substr(0, showChar) + ellipsis;
+
+        intro<%= course.course_id %>.html(truncated<%= course.course_id %>);
+        $('#show-more-<%= course.course_id %>').show();
+
+        $('#show-more-<%= course.course_id %>').click(function() {
+          if ($(this).text() == 'More') {
+            event.preventDefault();
+            intro<%= course.course_id %>.html(fullText<%= course.course_id %>); // 使用完整的文本，而不是带省略号的文本
+            $(this).text('Less');
+            intro<%= course.course_id %>.removeClass('fixed-height'); // 移除固定高度限制
+          } else {
+            event.preventDefault();
+            intro<%= course.course_id %>.html(truncated<%= course.course_id %>);
+            $(this).text('More');
+            intro<%= course.course_id %>.addClass('fixed-height'); // 添加固定高度限制
+          }
+        });
+      } else {
+        $('#show-more-<%= course.course_id %>').hide();
+      }
+    <% end %>
+  <% end %>
+});
+
+
+$(document).ready(function() {
+  var css = `
+    @media (min-width: 992px) and (max-width: 1200px) {
+      .fixed-height {
+        height: 230px; 
+      }
+    }
+    @media (min-width: 1200px) and (max-width: 1440px) {
+      .fixed-height {
+        height: 170px; 
+      }
+      .course-name {
+        display: block;
+        line-height: 1.2em;
+        height: 3.6em;
+      }
+    }
+    @media (min-width: 1440px) and (max-width: 1920px) {
+      .fixed-height {
+        height: 120px; 
+      }
+      .course-name {
+        display: block;
+        line-height: 1.2em;
+        height: 3.6em;
+      }
+    }
+    @media (min-width: 1920px) {
+      .fixed-height {
+        height: 90px; 
+      }
+      .course-name {
+        display: block;
+        line-height: 1.2em;
+        height: 3.6em;
+      }
+    }
+  `;
+  
+  var style = document.createElement('style');
+  style.type = 'text/css';
+  style.innerHTML = css;
+  
+  document.head.appendChild(style);
+});
+
+function serializeForm(form) {
+  const formData = new FormData(form);
+  const serializedData = Array.from(formData.entries())
+    .map(([key, value]) => encodeURIComponent(key) + "=" + encodeURIComponent(value))
+    .join("&");
+  return serializedData;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const forms = document.querySelectorAll("form.enrollment-form");
+
+  forms.forEach(function (form) {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const xhr = new XMLHttpRequest();
+      xhr.open(form.method, form.action);
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest"); // Add this line here
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          // Refresh the page when the course is successfully added
+          window.location.reload();
+        } else if (xhr.status === 401) {
+          const redirectUrl = xhr.getResponseHeader("X-Redirect-URL");
+          window.location.href = redirectUrl;
+        } else {
+          console.log("There was an error submitting the form.");
+        }
+      };
+      xhr.send(serializeForm(form));
+    });
+  });
+});
+
+</script>
+<%= erb :"common/footer" %>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="bootstrap-3.3.7/img/favicon.ico">
+
+    <title><%= @course.course_name %></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/bootstrap-3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/bootstrap-3.3.7/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/widgets/navbar-static-top.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+    .rating {
+      font-size: 1.5em;
+      color: #FFD700;
+    }
+    .panel-custom {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    body {
+      background-color: #f5f5f5;
+    }
+
+    .rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+    }
+    .rate:not(:checked) > input {
+        position:absolute;
+        top:-9999px;
+    }
+    .rate:not(:checked) > label {
+        float:right;
+        width:1em;
+        overflow:hidden;
+        white-space:nowrap;
+        cursor:pointer;
+        font-size:30px;
+        color:#ccc;
+    }
+    .rate:not(:checked) > label:before {
+        content: '★ ';
+    }
+    .rate > input:checked ~ label {
+        color: #ffc700;    
+    }
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: #deb217;  
+    }
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: #c59b08;
+    }
+    
+  </style>
+  </head>
+
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">EdFlix</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <% if session[:logged_in] == true %>
+              <li>
+                <% if session[:account_type] == "1" %>
+                  <a href="/user-dashboard">My Dashboard</a>
+                <% elsif session[:account_type] == "2" %>
+                  <a href="/moderator-dashboard">My Dashboard</a>
+                <% elsif session[:account_type] == "3" %>
+                  <a href="/manager-dashboard">My Dashboard</a>
+                <% elsif session[:account_type] == "4" %>
+                  <a href="/administrator-dashboard">My Dashboard</a>
+                <% end %>
+              </li>
+            <% else %>
+              <!-- <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign In <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li class="dropdown-header">For Client</li>
+                  <li><a href="/sign-in">User</a></li>
+                  <li><a href="/moderator-sign-in">Moderator</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li class="dropdown-header">For Company</li>
+                  <li><a href="/administrator-sign-in">Administrator</a></li>
+                  <li><a href="/manager-sign-in">Manager</a></li>
+                  <li class="dropdown-header">Beta</li>
+                  <li><a href="/sign-in">Sign-In</a></li>
+                </ul>
+              </li> -->
+              <li><a href="/sign-in">Sign In</a></li>
+            <% end %>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+  
+
+    <div class="container">
+    <div class="row panel-custom">
+        <div class="col-md-5">
+            <h1 class="page-header" style="margin: 15px 0 10px 0; border-bottom: none;"><%= @course.course_name %></h1>
+            <% if @course.has_image == 1 %>
+               <img src="/img/course_<%= @course.course_id %>.jpg" class="img-responsive img-thumbnail" style="width: 90%;" alt="课程预览图">
+            <% else %>
+
+            <% random_number = rand(1..10) %>
+               <img src="/img/random<%= random_number %>.jpg" class="img-responsive img-thumbnail" style="width: 90%;" alt="Random Image">
+            <% end %>
+
+            <div class="col-md-12" style="margin-top: 20px;">
+                <div style="display: flex; align-items: center; margin-left: 0px;margin-bottom:10px;">
+                    <p style="margin: 0;"><strong><%= @num_enrollments %></strong> users have enrolled</p>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <a target="_blank" href="<%= @course.enrollment_link %>" class="btn btn-success">Learn Now</a>
+                    <% if @enrollments.any? { |e| e.course_id == @course.course_id } %>
+                        <form action="/cancel-enrolled-course/<%= @course.course_id %>" class="enrollment-form" method="POST" style="display: inline-block; margin: 0 0 0 5px;">
+                            <button type="submit" class="btn btn-danger">Cancel enrollment</button>
+                        </form>
+                    <% else %>
+                        <form action="/enroll-course/<%= @course.course_id %>" class="enrollment-form" method="POST" style="display: inline-block; margin: 0 0 0 5px;">
+                            <button type="submit" class="btn btn-primary" name="Explore">Enroll</button>
+                        </form>
+                        <% if @wishlists.any? { |e| e.course_id == @course.course_id } %>
+                          <form action="/withdraw-from-wishlist/<%= @course.course_id %>" class="enrollment-form" method="POST" style="display: inline-block; margin: 0 0 0 5px;">
+                              <button type="submit" class="btn btn-danger">Withdraw from wishlist</button>
+                          </form>
+                        <% else %>
+                          <form action="/add-to-wishlist/<%= @course.course_id %>" class="enrollment-form" method="POST" style="display: inline-block; margin: 0 0 0 5px;">
+                              <button type="submit" class="btn btn-info" name="Explore">Add to wishlist</button>
+                          </form>
+                        <% end %>
+                    <% end %>      
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="col-md-10 row">    
+                <h3><i class="fa fa-star"></i> Course Rating</h2>
+                <p><strong><%= @average %> / 5</strong> （Based on <%= @rating_count %> evaluations）</p>
+                <p class="rating">
+                <form method="POST" action="/add-rating/<%= @course.course_id %>">
+                  <div class="rate">
+                    <input type="radio" id="star5" name="rate" value="5" />
+                    <label for="star5" title="text">5 stars</label>
+                    <input type="radio" id="star4" name="rate" value="4" />
+                    <label for="star4" title="text">4 stars</label>
+                    <input type="radio" id="star3" name="rate" value="3" />
+                    <label for="star3" title="text">3 stars</label>
+                    <input type="radio" id="star2" name="rate" value="2" />
+                    <label for="star2" title="text">2 stars</label>
+                    <input type="radio" id="star1" name="rate" value="1" checked/>
+                    <label for="star1" title="text">1 star</label>
+                  </div>
+                <button type="submit" class="btn btn-info" onClick="alertFunction()">Rate</button>
+                </form>
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h3><i class="glyphicon glyphicon-briefcase"></i> Course Provider</h3>
+                    <p><%= @course.company %></p>
+                </div>
+                <div class="col-md-6">
+                    <h3><i class="glyphicon glyphicon-time"></i> Course Duration</h3>
+                    <p><%= @course.course_duration / 60 %>h <%= @course.course_duration % 60 %>min</p>
+                </div>
+            </div>
+            <div class="col-md-12 row">
+                <h3><i class="fa fa-info-circle"></i> Course Description</h2>
+                <div class="col-md-12 row">
+                  <p><%= @course.course_description %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+        <div class="row panel-custom">
+            <div class="col-md-12">
+                <h2><i class="fa fa-comments"></i> Course reviews</h2>
+                <div class="panel panel-default">
+                    <% revV = 0 %>
+                    <% @reviews.each do |review| %>
+                      <% if review.course_id == @course.course_id %>
+                          <% revV = revV + 1 %>
+                          <div class="panel-heading">
+                          <% reviewerName = User.first(user_id: review.user_id).first_name + " " + User.first(user_id: review.user_id).surname %>
+                          <strong><%= reviewerName %></strong> <span class="text-muted">Posted on <%= review.updated_at %></span>
+                          </div>
+                          <div class="panel-body">
+                              <%= review.review_statement%>
+                          </div>
+                      <% end %>
+                    <% end %>
+                    <% if revV == 0 %>
+                      <p>&nbsp;&nbsp;&nbsp;No reviews yet.</p>
+                    <% end %>
+                </div>
+                
+            </div>
+        </div>
+        <hr>
+        <div class="row panel-custom">
+            <div class="col-md-12">
+                <h2><i class="fa fa-pencil"></i> Write a review</h2>
+                <form method="POST" action="/submit-review/<%= @course.course_id %>" name="myForm" onsubmit="return validateForm()">
+                    <div class="form-group">
+                    <label for="comment">Content of reviews：</label>
+                    <textarea class="form-control" rows="5" id="comment" placeholder="Please enter your comments" name="content"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit the review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function validateForm() {
+      var x = document.forms["myForm"]["content"].value;
+      if (x == "") {
+        alert("Reviews are empty.");
+        return false;
+        }
+      }
+
+      function alertFunction() {
+        alert("Ratings added!");
+      }
+    </script>
+
+</body>
+
+</html>
